@@ -4,7 +4,9 @@ import MaterialBtn from '../materialComponents/MaterialButton.jsx';
 import Shimmer from '../materialComponents/Shimmer.jsx';
 import '../src/index.css';
 
-
+//this is product list page component
+// it will be used to display a list of products
+// or a product catalog in the application
 export default function ProductList() {
   const [loading, setLoading] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
