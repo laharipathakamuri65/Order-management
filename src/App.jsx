@@ -7,7 +7,6 @@ import ProductList from '../products/ProductList.jsx';
 import BasicButtons from '../jsFeatures/index.jsx';
 import DrawerAppBar from '../materialComponents/appBar.jsx';
 import Typography from '@mui/material/Typography';
-import UserDetails from '../userdetails/UserDetails.jsx';
 
 export default function App() {
   return (
@@ -19,7 +18,6 @@ export default function App() {
         <Route path="/js-features" element={<BasicButtons />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/productslist" element={<ProductList />} />
-        <Route path="/userdetails" element={<UserDetails />} />
         <Route path="*" element={<Typography>Welcome to the PMJ</Typography>} />
       </Routes>
     </Router>

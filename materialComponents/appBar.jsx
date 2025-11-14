@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Js Features', 'Contact', 'Products List', 'User Details'];
+const navItems = ['Home', 'About', 'Js Features', 'Contact'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -60,11 +60,6 @@ function DrawerAppBar(props) {
             <ListItemText primary="Products List" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/userdetails" sx={{ textAlign: 'center' }}>
-            <ListItemText primary="User Details" />
-          </ListItemButton>
-        </ListItem>
       </List>
     </Box>
   );
@@ -98,7 +93,6 @@ function DrawerAppBar(props) {
             <Button component={Link} to="/js-features" sx={{ color: '#fff' }}>Js Features</Button>
             <Button component={Link} to="/contact" sx={{ color: '#fff' }}>Contact</Button>
             <Button component={Link} to="/productslist" sx={{ color: '#fff' }}>Products List</Button>
-            <Button component={Link} to="/userdetails" sx={{ color: '#fff' }}>User Details</Button>
 
           </Box>
         </Toolbar>

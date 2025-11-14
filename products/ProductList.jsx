@@ -3,12 +3,10 @@ import getProducts from './getProducts.js';
 import MaterialBtn from '../materialComponents/MaterialButton.jsx';
 import Shimmer from '../materialComponents/Shimmer.jsx';
 import '../src/index.css';
-import MaterialBasicCard from '../materialComponents/MaterialCard.jsx';
 
 //this is product list page component
 // it will be used to display a list of products
 // or a product catalog in the application
-
 export default function ProductList() {
   const [loading, setLoading] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
@@ -39,27 +37,15 @@ export default function ProductList() {
         products.length > 0 && (
           <ul>
             {products.map(product => (
-              <div key={product.id}> 
-                  <MaterialBasicCard
-                    title={product.title}
-                    description={product.description}
-                    category={product.category}
-                    brand={product.brand}
-                  />
-
-
-              </div>
+              <li key={product.id}>{product.title}</li>
             ))}
           </ul>
         )
-
+        
       )}
 
     </div>
-
     </div>
   
   )
 }
-
-
