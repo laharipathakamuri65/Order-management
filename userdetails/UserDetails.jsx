@@ -9,6 +9,10 @@ export default function UserDetails() {
   const [userDetails, setUserDetails] = React.useState([]);
   const [error, setError] = React.useState(null);
 
+  const handleUpdateUser = (updatedUser) => {
+    setUserDetails((prev) => prev.map(u => (u.id === updatedUser.id ? updatedUser : u)));
+  };
+  
   // Runs once when component mounts
   useEffect(() => {
     getUserdetails({ setLoading, setUserDetails, setError });
@@ -20,7 +24,8 @@ export default function UserDetails() {
   console.log('User Details:', userDetails);
   return (
     <div>
-     <MaterialTable userDetails={userDetails} />
+     <MaterialTable userDetails={userDetails} 
+     onUpdateUser={handleUpdateUser} />
    </div>
   );
  

@@ -4,6 +4,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import DialogBox from './DialogBox.jsx';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
 const bull = (
   <Box
@@ -15,22 +17,31 @@ const bull = (
 );
 
 
-export default function MaterialBasicCard({title, description, category, brand }) {
+export default function MaterialBasicCard({ productData, onUpdateProduct }) {
   return (
     <Card sx={{ maxWidth: 200 }}>
       <CardContent>
         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
         
-          {title}
+          {productData.title}
+            
+          
          
         </Typography>
         <Typography variant="h5" component="div">
-         {brand}
+         <span>{productData.brand}
+            <DialogBox
+              dialogName={productData.title}
+              dialogButton={<EditTwoToneIcon />}
+              productData={productData}
+              onSubmit={onUpdateProduct}
+            />
+          </span>
           
         </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{category}</Typography>
+        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{productData.category}</Typography>
         <Typography variant="body2">
-          {description}
+          {productData.description}
           
         </Typography>
       </CardContent>

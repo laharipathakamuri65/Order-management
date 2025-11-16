@@ -4,6 +4,7 @@ import MaterialBtn from '../materialComponents/MaterialButton.jsx';
 import Shimmer from '../materialComponents/Shimmer.jsx';
 import '../src/index.css';
 import MaterialBasicCard from '../materialComponents/MaterialCard.jsx';
+import DialogBox from '../materialComponents/DialogBox.jsx';
 
 //this is product list page component
 // it will be used to display a list of products
@@ -13,6 +14,11 @@ export default function ProductList() {
   const [loading, setLoading] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
   const [products, setProducts] = React.useState([]);
+
+  // callback to update a product in the products array
+  const handleUpdateProduct = (updatedProduct) => {
+    setProducts((prev) => prev.map(p => (p.id === updatedProduct.id ? updatedProduct : p)));
+  };
 
  
   return (
@@ -34,21 +40,18 @@ export default function ProductList() {
     <div>
       {loading ? (
         <Shimmer />
-      ) : (
+      ) : ( 
         // Render your actual product list or content here
         products.length > 0 && (
           <ul>
             {products.map(product => (
-              <div key={product.id}> 
-                  <MaterialBasicCard
-                    title={product.title}
-                    description={product.description}
-                    category={product.category}
-                    brand={product.brand}
-                  />
-
-
+              <div key={product.id} >
+                <MaterialBasicCard
+                  productData={product}
+                  onUpdateProduct={handleUpdateProduct}
+                />
               </div>
+
             ))}
           </ul>
         )
