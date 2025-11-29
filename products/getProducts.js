@@ -1,9 +1,8 @@
 //Below API is to get products using async/await
 // It fetches product data from a dummy JSON API and updates the state accordingly.
 
-export default async function getProducts({setLoading, setDisableButton, setProducts}) {
+export default async function getProducts({setLoading, setProducts}) {
   setLoading(true);
-  setDisableButton(true);
   try {
     let res = await fetch("https://dummyjson.com/products");
     let data = await res.json();
@@ -17,7 +16,6 @@ export default async function getProducts({setLoading, setDisableButton, setProd
     throw err;
   } finally {
     setLoading(false);
-    setDisableButton(false);
   }
 }
 

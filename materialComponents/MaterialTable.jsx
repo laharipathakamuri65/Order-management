@@ -5,7 +5,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import UserDialogBox from './UserDialogBox';
+import MDialogBox from './MDialogBox';
+import UserForm from '../userdetails/UserForm';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function BasicTable({ userDetails, onUpdateUser }) {
@@ -19,7 +20,7 @@ export default function BasicTable({ userDetails, onUpdateUser }) {
             <TableCell align="center">Phone</TableCell>
             <TableCell align="center">Email</TableCell>
             <TableCell align="center">Gender</TableCell>
-            <TableCell align="center">Editoption</TableCell>
+            <TableCell align="center">Edit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,7 +37,15 @@ export default function BasicTable({ userDetails, onUpdateUser }) {
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">{row.gender}</TableCell>
               <TableCell align="center">
-                <UserDialogBox userDetails={row} dialogName='Update user details' dialogButton={<EditIcon />} onSubmit={onUpdateUser} />
+                <MDialogBox
+                  data={row}
+                  dialogName={`Edit ${row.firstName} ${row.lastName}`}
+                  dialogButton={<EditIcon />}
+                  formComponent={UserForm}
+                  onSubmit={onUpdateUser}
+                  dialogContentText="Update user details and save."
+                  itemType="user"
+                />
               </TableCell>
               
             </TableRow>

@@ -4,8 +4,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import DialogBox from './DialogBox.jsx';
+import MDialogBox from './MDialogBox.jsx';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import ProductForm from '../products/ProductForm.jsx';
 
 const bull = (
   <Box
@@ -24,17 +25,20 @@ export default function MaterialBasicCard({ productData, onUpdateProduct }) {
         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
         
           {productData.title}
-            
+             
           
          
         </Typography>
         <Typography variant="h5" component="div">
          <span>{productData.brand}
-            <DialogBox
+            <MDialogBox
               dialogName={productData.title}
               dialogButton={<EditTwoToneIcon />}
-              productData={productData}
+              data={productData}
+              formComponent={ProductForm}
               onSubmit={onUpdateProduct}
+              dialogContentText="Edit product details and submit."
+              itemType="product"
             />
           </span>
           

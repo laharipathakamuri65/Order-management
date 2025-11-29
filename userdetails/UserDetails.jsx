@@ -1,6 +1,6 @@
 import React from 'react';
 import {useEffect} from 'react';
-import getUserdetails from './getUserdetails.js';
+import getUserdetails, { updateuserDetails } from './getUserdetails.js';
 import MaterialTable from '../materialComponents/MaterialTable.jsx';
 
 
@@ -9,8 +9,27 @@ export default function UserDetails() {
   const [userDetails, setUserDetails] = React.useState([]);
   const [error, setError] = React.useState(null);
 
-  const handleUpdateUser = (updatedUser) => {
-    setUserDetails((prev) => prev.map(u => (u.id === updatedUser.id ? updatedUser : u)));
+  const handleUpdateUser = async (updatedUser) => {
+    try {
+      // Call API to update user
+      const apiResponse = await updateuserDetails({
+        userId: updatedUser.id,
+        updatedData: {
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          email: updatedUser.email,
+          phone: updatedUser.phone,
+          gender: updatedUser.gender,
+        },
+      });
+
+      // Update local state with API response
+      const responseData = { ...updatedUser, ...apiResponse };
+      setUserDetails((prev) => prev.map(u => (u.id === responseData.id ? responseData : u)));
+    } catch (err) {
+      console.error('Error updating user:', err);
+      throw err; // Let MDialogBox handle the error display
+    }
   };
   
   // Runs once when component mounts
@@ -20,7 +39,8 @@ export default function UserDetails() {
 
   if (loading) return <p>Loading user details...</p>;
   if (error) return <p>Error: {error}</p>;
-  if (!userDetails) return <p>No user details found</p>;
+  if (!userDetails || userDetails.length === 0) return <p>No user details found</p>;
+  
   console.log('User Details:', userDetails);
   return (
     <div>
