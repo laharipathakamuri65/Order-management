@@ -3,3 +3,43 @@
   width: 200px;
   height: 60px;
 }
+
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  text-align: center; /* centers h2 and paragraphs */
+}
+
+/* center the quick links container on the page */
+.hyper-links {
+  list-style: none;
+  padding: 0;
+  margin: 16px auto;   /* centers the block horizontally */
+  max-width: 640px;
+  width: 100%;
+  display: block;      /* ensure it behaves as a centered block */
+  text-align: left;    /* keep link + description inline and left-aligned inside the block */
+}
+
+/* layout each item as a single row (link + description) */
+.hyper-links li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+/* link styling */
+.hyper-links a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hyper-links a:hover {
+  text-decoration: underline;
+}
