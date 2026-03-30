@@ -28,7 +28,10 @@ export default function MDialogBox({
   formComponent: FormComponent = null,
   onSubmit, 
   dialogContentText,
-  itemType = 'item'
+  itemType = 'item',
+  dialogMaxWidth = 'sm',
+  formProps = {},
+  onOpen, // optional callback invoked when dialog actually opens
 }) {
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -38,12 +41,32 @@ export default function MDialogBox({
   const [formIsValid, setFormIsValid] = React.useState(false);
   const formComponentRef = React.useRef(null);
   const formRef = React.useRef(null); // DOM ref to child <form>
+  const openedRef = React.useRef(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
+  // Call onOpen callback when the dialog transitions to open.
+  //Line 50-65 are using for creating products using category list
+  React.useEffect(() => {
+    if (!open) {
+      // reset so onOpen can fire again next time dialog opens
+      openedRef.current = false;
+      return;
+    }
+    if (open && typeof onOpen === 'function' && !openedRef.current) {
+      try {
+        onOpen();
+      } catch (err) {
+        console.error('onOpen callback error:', err);
+      }
+      openedRef.current = true;
+    }
+  }, [open, onOpen]);
+
   // Callbacks for custom form component to use
   const handleFormSuccess = (responseData) => {
+    console.log('Form success responseData:', responseData);
     setSnackbarMessage(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} updated successfully!`);
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
@@ -83,10 +106,10 @@ export default function MDialogBox({
       if (typeof el.requestSubmit === 'function') {
         el.requestSubmit();
       } else {
-        el.dispatchEvent(new Event('submit', { bubbles: true }));
+        // create a cancelable submit event so handlers can prevent default
+        el.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
       }
     } catch (err) {
-      // Ensure we still surface errors
       console.error('Error triggering form submit:', err);
     }
   };
@@ -99,7 +122,7 @@ export default function MDialogBox({
           {dialogButton}
         </Button>
 
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth={dialogMaxWidth}>
           <DialogTitle>{dialogName}</DialogTitle>
           <DialogContent>
             <DialogContentText>{dialogContentText}</DialogContentText>
@@ -116,6 +139,7 @@ export default function MDialogBox({
               onError={handleFormError}
               onSavingChange={handleFormSavingChange}
               onValidationChange={handleFormValidationChange}
+              {...formProps}
             />
           </DialogContent>
           <DialogActions>

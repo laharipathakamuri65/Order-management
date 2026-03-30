@@ -8,6 +8,9 @@ import Paper from '@mui/material/Paper';
 import MDialogBox from './MDialogBox';
 import UserForm from '../userdetails/UserForm';
 import EditIcon from '@mui/icons-material/Edit';
+import DialogBoxview from './DialogBoxview.jsx';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 
 export default function BasicTable({ userDetails, onUpdateUser }) {
   return (
@@ -44,6 +47,16 @@ export default function BasicTable({ userDetails, onUpdateUser }) {
                   formComponent={UserForm}
                   onSubmit={onUpdateUser}
                   dialogContentText="Update user details and save."
+                  itemType="user"
+                />
+                <DialogBoxview  
+                  data={row}         
+                  dialogName={`View ${row.firstName} ${row.lastName} details`}
+                  dialogButton={<VisibilityIcon />}
+                  formComponent={UserForm}
+                  onSubmit={onUpdateUser}
+                  dialogviewButton={<VisibilityIcon />}
+                  dialogviewContentText="User details"
                   itemType="user"
                 />
               </TableCell>

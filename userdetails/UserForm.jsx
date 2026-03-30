@@ -2,7 +2,6 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { updateuserDetails } from '../userdetails/getUserdetails.js';
 
 // UserForm component - handles user editing with Formik validation
 // Props:
@@ -13,7 +12,6 @@ import { updateuserDetails } from '../userdetails/getUserdetails.js';
 // - onValidationChange: function(isValid) - called when validation state changes
 // - formRef: React ref - ref to the form element for triggering submission
 export default React.forwardRef(function UserForm({ 
-  userData,
   data,
   onSuccess, 
   onError,
@@ -37,38 +35,25 @@ export default React.forwardRef(function UserForm({
     // Prefer canonical `data` prop (passed from MDialogBox); fallback to
     // legacy `userData` prop for backward compatibility.
     initialValues: {
-      firstName: data?.firstName ?? userData?.firstName ?? '',
-      lastName: data?.lastName ?? userData?.lastName ?? '',
-      email: data?.email ?? userData?.email ?? '',
-      phone: data?.phone ?? userData?.phone ?? '',
-      gender: data?.gender ?? userData?.gender ?? '',
+      firstName: data?.firstName ?? data?.firstName ?? '',
+      lastName: data?.lastName ?? data?.lastName ?? '',
+      email: data?.email ?? data?.email ?? '',
+      phone: data?.phone ?? data?.phone ?? '',
+      gender: data?.gender ?? data?.gender ?? '',
     },
     validationSchema,
     onSubmit: async (values) => {
-      const updated = { ...userData, ...values };
+      const updated = { ...data, ...values };
       setIsSaving(true);
       onSavingChange?.(true);
 
       try {
-        // Call updateuserDetails API with userId and updated data
-        const userId = data?.id ?? userData?.id;
-
-        const apiResponse = await updateuserDetails({
-          userId,
-          updatedData: {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            phone: values.phone,
-            gender: values.gender,
-          },
-        });
-
-        // Merge API response with local user state
-        const responseData = { ...(data ?? userData), ...apiResponse };
-        onSuccess?.(responseData);
+        // Do not perform API calls here — let the parent (page) dispatch
+        // the Redux thunk (e.g. `updateUser`) to perform the PUT and
+        // update the store. Report success with the updated object.
+        onSuccess?.(updated);
       } catch (error) {
-        console.error('Error updating user:', error);
+        console.error('Error in UserForm submit:', error);
         onError?.(error);
       } finally {
         setIsSaving(false);

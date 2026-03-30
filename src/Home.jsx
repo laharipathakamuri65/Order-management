@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux'; 
 //this is home page component
 // it will be used to display the home page content
 // or a welcome message in the application
 export default function Home() {
+    const products = useSelector(state => state.products.items);
+  console.log('Products in Home Page:', products);
   return (
     <div className="home-page">
       <h2>Home Page </h2>

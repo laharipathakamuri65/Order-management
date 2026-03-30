@@ -5,7 +5,9 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import MDialogBox from './MDialogBox.jsx';
+import DialogBoxview from './DialogBoxview.jsx';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import ProductForm from '../products/ProductForm.jsx';
 
 const bull = (
@@ -37,9 +39,19 @@ export default function MaterialBasicCard({ productData, onUpdateProduct }) {
               data={productData}
               formComponent={ProductForm}
               onSubmit={onUpdateProduct}
+              formProps={{ mode: 'edit' }}
               dialogContentText="Edit product details and submit."
               itemType="product"
             />
+            <DialogBoxview
+            dialogName={productData.title}
+              dialogButton={<VisibilityIcon />}
+              data={productData}
+              formComponent={ProductForm}
+              dialogviewContentText="Product Details"
+              formProps={{ mode: 'view' }}
+              itemType="product"
+              />
           </span>
           
         </Typography>

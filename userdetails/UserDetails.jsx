@@ -1,46 +1,41 @@
 import React from 'react';
 import {useEffect} from 'react';
-import getUserdetails, { updateuserDetails } from './getUserdetails.js';
+import getUserdetails from './getUserdetails.js';
 import MaterialTable from '../materialComponents/MaterialTable.jsx';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers, userUpdated, updateUser } from '../src/store/usersSlice';
 
 export default function UserDetails() {
-  const [loading, setLoading] = React.useState(false);
-  const [userDetails, setUserDetails] = React.useState([]);
-  const [error, setError] = React.useState(null);
+  const dispatch = useDispatch();
+  const userDetails = useSelector(state => state.users.items);
+  const loading = useSelector(state => state.users.loading);
+  const error = useSelector(state => state.users.error);
 
   const handleUpdateUser = async (updatedUser) => {
+  
     try {
-      // Call API to update user
-      const apiResponse = await updateuserDetails({
-        userId: updatedUser.id,
-        updatedData: {
-          firstName: updatedUser.firstName,
-          lastName: updatedUser.lastName,
-          email: updatedUser.email,
-          phone: updatedUser.phone,
-          gender: updatedUser.gender,
-        },
-      });
-
-      // Update local state with API response
-      const responseData = { ...updatedUser, ...apiResponse };
-      setUserDetails((prev) => prev.map(u => (u.id === responseData.id ? responseData : u)));
+      // dispatch thunk to perform API update and update store on success
+      dispatch(updateUser({ userId: updatedUser.id, updatedData: {
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        gender: updatedUser.gender,
+      }}));
     } catch (err) {
-      console.error('Error updating user:', err);
-      throw err; // Let MDialogBox handle the error display
+      console.error('Failed to dispatch updateUser:', err);
+      throw err;
     }
   };
-  
-  // Runs once when component mounts
+
   useEffect(() => {
-    getUserdetails({ setLoading, setUserDetails, setError });
-  }, []); // Empty dependency array = run once on mount
+    dispatch(fetchUsers());
+  }, []);
 
   if (loading) return <p>Loading user details...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!userDetails || userDetails.length === 0) return <p>No user details found</p>;
-  
+
   console.log('User Details:', userDetails);
   return (
     <div>
@@ -48,6 +43,6 @@ export default function UserDetails() {
      onUpdateUser={handleUpdateUser} />
    </div>
   );
- 
+
 }
     
